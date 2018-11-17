@@ -13,8 +13,10 @@ class Api::V1::RestaurantsController < Api::V1::BaseController
 
   def update
     if @restaurant.update(restaurant_params)
-      render :index
+      # return created object, for validation or added status
+      render :show
     else
+      # return error message
       render_error
     end
   end
@@ -22,6 +24,7 @@ class Api::V1::RestaurantsController < Api::V1::BaseController
   def create
     @restaurant = Restaurant.new(restaurant_params)
     if @restaurant.save
+      # return created object, for validation or added status (created 20X)
       render :show, status: :created
     else
       render_error
@@ -30,6 +33,7 @@ class Api::V1::RestaurantsController < Api::V1::BaseController
 
   def destroy
     @restaurant.destroy
+    # no render so no added to status:, so use head to add stauts to head (no content)
     head :no_content
   end
 
